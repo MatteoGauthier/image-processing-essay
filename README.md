@@ -1,0 +1,10 @@
+- [x] grayscaleMedian
+- [x] BW
+- [x] grayscaleFormula
+- [x] swapBlueAndGreen
+- [x] swapRedAndGreen
+- [x] halfGreen
+- [x] invertBtn
+- [ ] sepia
+- [ ] halfContrast
+- [ ] prison
