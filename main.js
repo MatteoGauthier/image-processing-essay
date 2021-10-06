@@ -21,18 +21,27 @@ if (canvas.getContext) {
 		}
 		ctx.putImageData(imageData, 0, 0)
 	}
-  
-	const grayscale = function () {
+
+	// [ G, R, B, A ]
+	const swapRedAndGreen = function () {
 		var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
 		var data = imageData.data
 		for (let i = 0; i < data.length; i += 4) {
-			let gray = (data[i] + data[i + 1] + data[i + 2]) / 3
-			data[i] = gray
-			data[i + 1] = gray
-			data[i + 2] = gray
+			;[data[i], data[i + 1]] = [data[i + 1], data[i]]
 		}
 		ctx.putImageData(imageData, 0, 0)
 	}
+
+	// [ R, B, G, A ]
+	const swapBlueAndGreen = function () {
+		var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+		var data = imageData.data
+		for (let i = 0; i < data.length; i += 4) {
+			;[data[i], data[i + 1], data[i + 2], data[i + 3]] = [data[i], data[i + 1], data[i + 2], data[i + 3]] 
+		}
+		ctx.putImageData(imageData, 0, 0)
+	}
+
 	const invert = function () {
 		var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
 		var data = imageData.data
@@ -51,6 +60,8 @@ if (canvas.getContext) {
 	}
 	document.getElementById("grayscaleBtn").addEventListener("click", grayscale)
 	document.getElementById("invertBtn").addEventListener("click", invert)
+	document.getElementById("swapBlueAndGreen").addEventListener("click", swapBlueAndGreen)
+	document.getElementById("swapRedAndGreen").addEventListener("click", swapRedAndGreen)
 	document.getElementById("resetBtn").addEventListener("click", function () {
 		ctx.clearRect(0, 0, canvas.width, canvas.height)
 		ctx.drawImage(img, 0, 0)
