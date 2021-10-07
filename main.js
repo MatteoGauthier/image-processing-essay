@@ -16,7 +16,7 @@ if (canvas.getContext) {
 			data[i + 1] = gray
 			data[i + 2] = gray
 		}
-		ctx.putImageData(imageData, 0, 0)
+		writeImageToCanvas(imageData)
 	}
 
 	const grayscaleFormula = function () {
@@ -30,7 +30,7 @@ if (canvas.getContext) {
 			data[i + 2] = gray
 		}
 
-		ctx.putImageData(imageData, 0, 0)
+		writeImageToCanvas(imageData)
 	}
 	const BW = function () {
 		var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
@@ -48,7 +48,7 @@ if (canvas.getContext) {
 			}
 		}
 
-		ctx.putImageData(imageData, 0, 0)
+		writeImageToCanvas(imageData)
 	}
 
 	// [ G, R, B, A ]
@@ -61,7 +61,7 @@ if (canvas.getContext) {
 			data[i + 2] = data[i + 2] // B
 			data[i + 3] = data[i + 3] // A
 		}
-		ctx.putImageData(imageData, 0, 0)
+		writeImageToCanvas(imageData)
 	}
 
 	// [ R, B, G, A ]
@@ -74,7 +74,7 @@ if (canvas.getContext) {
 			data[i + 2] = data[i + 1] // B -> G
 			data[i + 3] = data[i + 3] // A
 		}
-		ctx.putImageData(imageData, 0, 0)
+		writeImageToCanvas(imageData)
 	}
 
 	const halfGreen = function () {
@@ -128,7 +128,7 @@ if (canvas.getContext) {
 		// 	data[i + 2] = 0 // B -> G
 		// 	// data[i + 3] = data[i + 3] // A
 		// }
-		ctx.putImageData(imageData, 0, 0)
+		writeImageToCanvas(imageData)
 	}
 
 	const invert = function () {
@@ -139,20 +139,86 @@ if (canvas.getContext) {
 			data[i + 1] = 255 - data[i + 1]
 			data[i + 2] = 255 - data[i + 2]
 		}
-		ctx.putImageData(imageData, 0, 0)
+		writeImageToCanvas(imageData)
 	}
-
-	const noise = function () {
+	const addBrightness = function () {
 		var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
 		var data = imageData.data
 		for (let i = 0; i < data.length; i += 4) {
-			data[i] = 255 - data[i]
-			data[i + 1] = 255 - data[i + 1]
-			data[i + 2] = 255 - data[i + 2]
+			data[i] = data[i] + 50
+			data[i + 1] = data[i + 1] + 50
+			data[i + 2] = data[i + 2] + 50
 		}
-		ctx.putImageData(imageData, 0, 0)
+		writeImageToCanvas(imageData)
 	}
-	
+	const reduceBrightness = function () {
+		var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+		var data = imageData.data
+		for (let i = 0; i < data.length; i += 4) {
+			data[i] = data[i] - 50
+			data[i + 1] = data[i + 1] - 50
+			data[i + 2] = data[i + 2] - 50
+		}
+		writeImageToCanvas(imageData)
+	}
+
+	const RBGNoise = function () {
+		var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+		var data = imageData.data
+		for (let i = 0; i < data.length; i += 4) {
+			data[i] = data[i] + Math.floor(Math.random() * 255)
+			data[i + 1] = data[i + 1] + Math.floor(Math.random() * 255)
+			data[i + 2] = data[i + 2] + Math.floor(Math.random() * 255)
+			data[i + 3] = data[i + 3] + Math.floor(Math.random() * 255)
+		}
+		writeImageToCanvas(imageData)
+	}
+
+	// function convolute (imgd, ){
+
+	// }
+
+	function writeImageToCanvas(imageData) {
+		ctx.putImageData(imageData, 0, 0)
+		setPalette(imageData)
+	}
+
+	function samplepalette2(numberofcolors, imgd) {
+		let idx
+		const palette = []
+		const ni = Math.ceil(Math.sqrt(numberofcolors))
+		const nj = Math.ceil(numberofcolors / ni)
+		const vx = imgd.width / (ni + 1)
+		const vy = imgd.height / (nj + 1)
+		for (let j = 0; j < nj; j += 1) {
+			for (let i = 0; i < ni; i += 1) {
+				if (palette.length === numberofcolors) {
+					break
+				} else {
+					idx = Math.floor((j + 1) * vy * imgd.width + (i + 1) * vx) * 4
+					palette.push({
+						r: imgd.data[idx],
+						g: imgd.data[idx + 1],
+						b: imgd.data[idx + 2],
+						a: imgd.data[idx + 3],
+					})
+				}
+			}
+		}
+
+		return palette
+	}
+
+	function setPalette(imgd) {
+		let palette = samplepalette2(4, imgd)
+		const squares = document.querySelectorAll(".palette-container div")
+
+		squares.forEach((square, index) => {
+			square.style.backgroundColor = `rgba(${palette[index].r}, ${palette[index].g}, ${palette[index].b}, ${palette[index].a})`
+		})
+		console.log(palette)
+	}
+
 	var ctx = canvas.getContext("2d")
 	var img = new Image()
 	img.src = "./us.png"
@@ -163,6 +229,9 @@ if (canvas.getContext) {
 	document.getElementById("grayscaleMedian").addEventListener("click", grayscaleMedian)
 	document.getElementById("grayscaleFormula").addEventListener("click", grayscaleFormula)
 	document.getElementById("invertBtn").addEventListener("click", invert)
+	document.getElementById("RBGNoise").addEventListener("click", RBGNoise)
+	document.getElementById("addBrightness").addEventListener("click", addBrightness)
+	document.getElementById("reduceBrightness").addEventListener("click", reduceBrightness)
 	document.getElementById("swapBlueAndGreen").addEventListener("click", swapBlueAndGreen)
 	document.getElementById("swapRedAndGreen").addEventListener("click", swapRedAndGreen)
 	document.getElementById("halfGreen").addEventListener("click", halfGreen)

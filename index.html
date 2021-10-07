@@ -18,10 +18,23 @@
 	</head>
 	<body>
 		<div id="app"></div>
-		<canvas id="c"> Pixel manipulation: Grayscaling and Color inversion </canvas>
+    <div class="flex flex-wrap">
+      <canvas id="c"> Pixel manipulation: Grayscaling and Color inversion </canvas>
+      <div class="flex palette-container space-x-2">
+        <div class="h-16 w-16"></div>
+        <div class="h-16 w-16"></div>
+        <div class="h-16 w-16"></div>
+        <div class="h-16 w-16"></div>
+      </div>
+
+
+    </div>
 		<div class="flex flex-wrap space-x-2 mt-4">
 			<input class="button" id="grayscaleMedian" type="button" value="Grayscale Median" />
 			<input class="button" id="BW" type="button" value="Black & White" />
+			<input class="button" id="RBGNoise" type="button" value="Noise RGB" />
+			<input class="button" id="addBrightness" type="button" value="Add brightness" />
+			<input class="button" id="reduceBrightness" type="button" value="Reduce brightness" />
 			<input class="button" id="grayscaleFormula" type="button" value="Grayscale Formula" />
 			<input class="button" id="swapBlueAndGreen" type="button" value="Swap BLue And Green" />
 			<input class="button" id="swapRedAndGreen" type="button" value="Swap Red And Green" />

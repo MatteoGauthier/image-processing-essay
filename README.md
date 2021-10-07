@@ -8,3 +8,4 @@
 - [ ] sepia
 - [ ] halfContrast
 - [ ] prison
+- [ ] blur
