@@ -51,8 +51,6 @@ if (canvas.getContext) {
 		writeImageToCanvas(imageData)
 	}
 	const verticalMirror = function () {
-
-
 		var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
 		var data = imageData.data
 
@@ -95,7 +93,6 @@ if (canvas.getContext) {
 				data[x * 4 + y * (width * 4) + 3] = ta[width - 1 - x][y]
 			}
 		}
-		
 
 		// for (let i = 0; i < data.length / 2; i += 4) {
 		// 	data[i] = 0 // R
@@ -103,6 +100,81 @@ if (canvas.getContext) {
 		// 	data[i + 2] = 0 // B -> G
 		// 	// data[i + 3] = data[i + 3] // A
 		// }
+		writeImageToCanvas(imageData)
+	}
+	const blur = function () {
+		var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+		var data = imageData.data
+
+		const height = canvas.height
+		const width = canvas.width
+
+		var tr = new Array(width).fill().map(() => Array(height))
+		var tg = new Array(width).fill().map(() => Array(height))
+		var tb = new Array(width).fill().map(() => Array(height))
+		var ta = new Array(width).fill().map(() => Array(height))
+
+		//  copy values
+		for (var y = 0; y < height; y++) {
+			for (var x = 0; x < width; x++) {
+				tr[x][y] = data[x * 4 + y * (width * 4) + 0]
+				tg[x][y] = data[x * 4 + y * (width * 4) + 1]
+				tb[x][y] = data[x * 4 + y * (width * 4) + 2]
+				ta[x][y] = data[x * 4 + y * (width * 4) + 3]
+			}
+		}
+
+		// Add blur
+		for (var y = 1; y < height - 1; y++) {
+			for (var x = 1; x < width - 1; x++) {
+				tr[x][y] =
+					(tr[x - 1][y - 1] +
+						tr[x][y - 1] +
+						tr[x + 1][y - 1] +
+						tr[x - 1][y] +
+						tr[x][y] +
+						tr[x + 1][y] +
+						tr[x - 1][y + 1] +
+						tr[x][y + 1] +
+						tr[x + 1][y + 1]) /
+					9
+				tg[x][y] =
+					(tg[x - 1][y - 1] +
+						tg[x][y - 1] +
+						tg[x + 1][y - 1] +
+						tg[x - 1][y] +
+						tg[x][y] +
+						tg[x + 1][y] +
+						tg[x - 1][y + 1] +
+						tg[x][y + 1] +
+						tg[x + 1][y + 1]) /
+					9
+				tb[x][y] =
+					(tb[x - 1][y - 1] +
+						tb[x][y - 1] +
+						tb[x + 1][y - 1] +
+						tb[x - 1][y] +
+						tb[x][y] +
+						tb[x + 1][y] +
+						tb[x - 1][y + 1] +
+						tb[x][y + 1] +
+						tb[x + 1][y + 1]) /
+					9
+				// ta[x][y] = ta[x][y];
+			}
+		}
+
+		// RETOUR EN 1D POUR AFFICHER LES MODIFICATIONS
+		// 4 tab 2D (r,g,b,a) -> 1 tab 1D POUR METTRE A JOUR L'IMAGE
+		for (var y = 0; y < height; y++) {
+			for (var x = 0; x < width; x++) {
+				// - 1 array starts at 0 not 1
+				data[x * 4 + y * (width * 4) + 0] = tr[x][y]
+				data[x * 4 + y * (width * 4) + 1] = tg[x][y]
+				data[x * 4 + y * (width * 4) + 2] = tb[x][y]
+				data[x * 4 + y * (width * 4) + 3] = ta[x][y]
+			}
+		}
 		writeImageToCanvas(imageData)
 	}
 
@@ -287,6 +359,7 @@ if (canvas.getContext) {
 	document.getElementById("RBGNoise").addEventListener("click", RBGNoise)
 	document.getElementById("addBrightness").addEventListener("click", addBrightness)
 	document.getElementById("verticalMirror").addEventListener("click", verticalMirror)
+	document.getElementById("blur").addEventListener("click", blur)
 	document.getElementById("reduceBrightness").addEventListener("click", reduceBrightness)
 	document.getElementById("swapBlueAndGreen").addEventListener("click", swapBlueAndGreen)
 	document.getElementById("swapRedAndGreen").addEventListener("click", swapRedAndGreen)
