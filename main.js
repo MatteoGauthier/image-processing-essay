@@ -50,6 +50,61 @@ if (canvas.getContext) {
 
 		writeImageToCanvas(imageData)
 	}
+	const verticalMirror = function () {
+
+
+		var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+		var data = imageData.data
+
+		const height = canvas.height
+		const width = canvas.width
+
+		var tr = new Array(width).fill().map(() => Array(height))
+		var tg = new Array(width).fill().map(() => Array(height))
+		var tb = new Array(width).fill().map(() => Array(height))
+		var ta = new Array(width).fill().map(() => Array(height))
+
+		// copie des valeurs
+		for (var y = 0; y < height; y++) {
+			for (var x = 0; x < width; x++) {
+				tr[x][y] = data[x * 4 + y * (width * 4) + 0]
+				tg[x][y] = data[x * 4 + y * (width * 4) + 1]
+				tb[x][y] = data[x * 4 + y * (width * 4) + 2]
+				ta[x][y] = data[x * 4 + y * (width * 4) + 3]
+			}
+		}
+
+		// // TRAITEMENT / APPLICATION D'UN FILTRE
+		// // mise en rouge de la moitier gauche
+		// for (var y = 0; y < height / 2; y++) {
+		// 	for (var x = 0; x < width; x++) {
+		// 		// console.log(x% 10)
+		// 		// tr[x][y] = 0
+		// 		tg[x][y] = x % 10 == 0 ? 255 : tg[x][y]
+		// 		// tb[x][y] = 255
+		// 		ta[x][y] = 255
+		// 	}
+		// }
+
+		for (var y = 0; y < height; y++) {
+			for (var x = 0; x < width; x++) {
+				// - 1 array starts at 0 not 1
+				data[x * 4 + y * (width * 4) + 0] = tr[width - 1 - x][y]
+				data[x * 4 + y * (width * 4) + 1] = tg[width - 1 - x][y]
+				data[x * 4 + y * (width * 4) + 2] = tb[width - 1 - x][y]
+				data[x * 4 + y * (width * 4) + 3] = ta[width - 1 - x][y]
+			}
+		}
+		
+
+		// for (let i = 0; i < data.length / 2; i += 4) {
+		// 	data[i] = 0 // R
+		// 	data[i + 1] = 255 // G -> B
+		// 	data[i + 2] = 0 // B -> G
+		// 	// data[i + 3] = data[i + 3] // A
+		// }
+		writeImageToCanvas(imageData)
+	}
 
 	// [ G, R, B, A ]
 	const swapRedAndGreen = function () {
@@ -231,6 +286,7 @@ if (canvas.getContext) {
 	document.getElementById("invertBtn").addEventListener("click", invert)
 	document.getElementById("RBGNoise").addEventListener("click", RBGNoise)
 	document.getElementById("addBrightness").addEventListener("click", addBrightness)
+	document.getElementById("verticalMirror").addEventListener("click", verticalMirror)
 	document.getElementById("reduceBrightness").addEventListener("click", reduceBrightness)
 	document.getElementById("swapBlueAndGreen").addEventListener("click", swapBlueAndGreen)
 	document.getElementById("swapRedAndGreen").addEventListener("click", swapRedAndGreen)

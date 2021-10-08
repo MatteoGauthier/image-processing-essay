@@ -14,33 +14,80 @@
 			.button-danger {
 				@apply bg-red-400 text-lg rounded shadow px-2 py-1 active:bg-red-500;
 			}
+			.grid-cell {
+				@apply p-2 flex flex-col;
+			}
 		</style>
 	</head>
 	<body>
 		<div id="app"></div>
-    <div class="flex flex-wrap">
-      <canvas id="c"> Pixel manipulation: Grayscaling and Color inversion </canvas>
-      <div class="flex palette-container space-x-2">
-        <div class="h-16 w-16"></div>
-        <div class="h-16 w-16"></div>
-        <div class="h-16 w-16"></div>
-        <div class="h-16 w-16"></div>
-      </div>
-
-
-    </div>
-		<div class="flex flex-wrap space-x-2 mt-4">
-			<input class="button" id="grayscaleMedian" type="button" value="Grayscale Median" />
-			<input class="button" id="BW" type="button" value="Black & White" />
-			<input class="button" id="RBGNoise" type="button" value="Noise RGB" />
-			<input class="button" id="addBrightness" type="button" value="Add brightness" />
-			<input class="button" id="reduceBrightness" type="button" value="Reduce brightness" />
-			<input class="button" id="grayscaleFormula" type="button" value="Grayscale Formula" />
-			<input class="button" id="swapBlueAndGreen" type="button" value="Swap BLue And Green" />
-			<input class="button" id="swapRedAndGreen" type="button" value="Swap Red And Green" />
-			<input class="button" id="halfGreen" type="button" value="Half Green" />
-			<input class="button" id="invertBtn" type="button" value="Invert" />
-			<input class="button-danger" id="resetBtn" type="button" value="Reset" />
+		<div class="flex flex-wrap flex-col items-center space-y-2">
+			<canvas id="c"> Pixel manipulation: Grayscaling and Color inversion </canvas>
+			<div class="flex palette-container space-x-2">
+				<div class="h-16 w-16"></div>
+				<div class="h-16 w-16"></div>
+				<div class="h-16 w-16"></div>
+				<div class="h-16 w-16"></div>
+			</div>
+		</div>
+		<div class="grid grid-cols-2 md:grid-cols-4 mt-4">
+			<div class="grid-cell">
+				<input class="button" id="grayscaleMedian" type="button" value="Grayscale Median" />
+				<p>
+					J'ai utiliser moyenne des couleurs de chaque couleurs de chaque pixels pour ensuite la repartir sur chacune
+					des couleurs.
+				</p>
+			</div>
+			<div class="grid-cell">
+				<input class="button" id="BW" type="button" value="Black & White" />
+				<p>
+					J'ai cumuler la somme des couleurs de chaque pixels pour définir si le pixel avec un intensité supérieur à la
+					somme des couleurs divisé par deux. Ensuite en fonction du resultat de la somme on trie les résultats et on
+					leurs applique soit la couleur blanche soit la couleur noire
+				</p>
+			</div>
+			<div class="grid-cell">
+				<input class="button" id="RBGNoise" type="button" value="Noise RGB" />
+				<p>J'ai générer une couleur et un alpha aléatoire en addition à ceux de chaque pixel de l'image</p>
+			</div>
+			<div class="grid-cell">
+				<input class="button" id="verticalMirror" type="button" value="Vertical Mirror" />
+				<p>
+					Pour ceux filtre au moment de l'execution de la fonction d'initialisation de l'image dans le canvas en
+					écrivant chaque pixel, j'ai utiliser l'incrément x et la taille de l'image pour inverser l'index du pixel à
+					écrire
+				</p>
+			</div>
+			<div class="grid-cell">
+				<input class="button" id="addBrightness" type="button" value="Add brightness" />
+				<p>
+					Pour chaque couleur j'ai ajouté la même valeur d'incrément, ce qui ajoute de la blancheur, pour chaque pixels
+				</p>
+			</div>
+			<div class="grid-cell">
+				<input class="button" id="reduceBrightness" type="button" value="Reduce brightness" />
+				<p>
+					Pour chaque couleur j'ai réduit la même valeur d'incrément, ce qui enléve de la blancheur, pour chaque pixels
+				</p>
+			</div>
+			<div class="grid-cell">
+				<input class="button" id="grayscaleFormula" type="button" value="Grayscale Formula" />
+				<p>
+					J'ai créer une variable qui a pour resultat, la multiplication de chaque couleurs d'un pixels à un
+					coefficient. Ce resultat est ajouté à chaque couleur de chaque Pixel
+				</p>
+			</div>
+			<div class="grid-cell">
+				<input class="button" id="swapRedAndGreen" type="button" value="Swap Red And Green" />
+				<p>J'ai inverser la couleur rouge avec la couleur verte</p>
+			</div>
+			<div class="grid-cell">
+				<input class="button" id="invertBtn" type="button" value="Invert" />
+				<p>On prend la coleur complémentaire</p>
+			</div>
+			<div class="grid-cell">
+				<input class="button" id="halfGreen" type="button" value="Half Green" />
+			</div>
 		</div>
 		<script type="module" src="/main.js"></script>
 	</body>
