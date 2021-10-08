@@ -9,7 +9,7 @@
 		<script src="https://cdn-tailwindcss.vercel.app/"></script>
 		<style type="text/tailwindcss">
 			.button {
-				@apply bg-green-400 text-lg rounded shadow px-2 py-1 active:bg-green-500;
+				@apply  text-lg rounded shadow px-2 py-1 active:bg-green-500;
 			}
 			.button-danger {
 				@apply bg-red-400 text-lg rounded shadow px-2 py-1 active:bg-red-500;
@@ -82,7 +82,7 @@
 				<p>J'ai inverser la couleur rouge avec la couleur verte</p>
 			</div>
 			<div class="grid-cell">
-				<input class="button" id="blur" type="button" value="Blur" />
+				<input class="button bg-orange-600" id="blur" type="button" value="Blur" />
 				<p>
 					On fait la somme des couleurs des 8 pixel autours de chaque pixels de l'image pour ensuite divisé le totale
 					par 9, cela sur chaque pixel.
