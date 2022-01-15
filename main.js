@@ -1,3 +1,4 @@
+import imgUrl from './us.png'
 var canvas = document.getElementById("c")
 if (canvas.getContext) {
 	function init(image) {
@@ -348,7 +349,7 @@ if (canvas.getContext) {
 
 	var ctx = canvas.getContext("2d")
 	var img = new Image()
-	img.src = "./us.png"
+	img.src = imgUrl
 	img.onload = function () {
 		init(this)
 	}
@@ -361,7 +362,7 @@ if (canvas.getContext) {
 	document.getElementById("verticalMirror").addEventListener("click", verticalMirror)
 	document.getElementById("blur").addEventListener("click", blur)
 	document.getElementById("reduceBrightness").addEventListener("click", reduceBrightness)
-	document.getElementById("swapBlueAndGreen").addEventListener("click", swapBlueAndGreen)
+	// document.getElementById("swapBlueAndGreen").addEventListener("click", swapBlueAndGreen)
 	document.getElementById("swapRedAndGreen").addEventListener("click", swapRedAndGreen)
 	document.getElementById("halfGreen").addEventListener("click", halfGreen)
 	document.getElementById("resetBtn").addEventListener("click", function () {
