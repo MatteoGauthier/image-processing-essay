@@ -1,5 +1,5 @@
 Il faut faire 
 
 ```
-npx vite build
+npx vite
 ```
